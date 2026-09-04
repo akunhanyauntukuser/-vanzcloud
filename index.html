@@ -498,8 +498,9 @@
             padding: 14px 20px;
             border-top: 1px solid var(--border-color);
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
+            gap: 10px;
             background: rgba(246, 246, 246, 0.6);
         }
 
@@ -513,7 +514,6 @@
             .dashboard-grid { grid-template-columns: 1fr; }
             .media-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 
-            /* Mobile Pop-Up Bottom Sheet Mode for Notes */
             .vctt-overlay {
                 align-items: flex-end !important;
                 padding: 0 !important;
@@ -535,7 +535,7 @@
 </head>
 <body>
 
-    <!-- 1. DESKTOP SIDEBAR (LEFT NAVBAR) -->
+    <!-- 1. DESKTOP SIDEBAR -->
     <aside class="sidebar">
         <div class="brand">
             <div class="brand-icon">
@@ -563,11 +563,10 @@
                     Video
                 </button>
             </li>
-            <!-- FITUR VANZ CATATAN -->
             <li class="nav-item" id="side-nav-notes">
                 <button onclick="openVcttModal()">
                     <span class="material-symbols-rounded">edit_note</span>
-                    Vanz Catatan (.vctt)
+                    Buat Catatan (.vctt)
                 </button>
             </li>
         </ul>
@@ -598,7 +597,6 @@
             <span class="material-symbols-rounded">movie</span>
             Video
         </button>
-        <!-- FITUR VANZ CATATAN HP -->
         <button class="bottom-nav-item" id="mob-nav-notes" onclick="openVcttModal()">
             <span class="material-symbols-rounded">edit_note</span>
             Catatan
@@ -613,7 +611,7 @@
             <span class="material-symbols-rounded" style="font-size: 56px; color: var(--accent-color); margin-bottom: 16px;">cloud_sync</span>
             <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Selamat Datang di vanz cloud</h2>
             <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; line-height: 1.5;">
-                Akses dan putar foto/video penyimpanan kamu langsung tanpa membuka tab Google Drive!
+                Akses dan kelola berkas Google Drive kamu langsung dari sini!
             </p>
             <button id="main-login-btn" class="apple-btn btn-accent" style="padding: 12px 28px; font-size: 15px;">
                 Hubungkan Akun Google
@@ -660,7 +658,7 @@
                                 <span class="material-symbols-rounded" style="font-size: 16px;">upload</span>
                                 Unggah
                             </button>
-                            <span id="upload-status" style="font-size: 12px; color: var(--accent-color);"></span>
+                            <span id="upload-status" style="font-size: 12px; color: var(--accent-color); font-weight: 500;"></span>
                         </div>
                     </div>
                 </div>
@@ -672,10 +670,10 @@
                 Memuat berkas dari vanz cloud...
             </div>
 
-            <!-- Media Grid View (Photos / Videos) -->
+            <!-- Media Grid View -->
             <div id="media-grid-container" class="media-grid hidden"></div>
 
-            <!-- Table View (For All Files) -->
+            <!-- Table View -->
             <div id="table-container" class="finder-table-container hidden">
                 <table class="finder-table">
                     <thead>
@@ -693,7 +691,7 @@
 
     </main>
 
-    <!-- 4. IN-APP MEDIA PLAYER MODAL (LIGHTBOX) -->
+    <!-- 4. MEDIA PLAYER MODAL -->
     <div id="media-modal" class="modal-overlay">
         <div class="modal-header">
             <div id="modal-filename" style="font-size: 16px; font-weight: 600;">Preview Media</div>
@@ -704,13 +702,13 @@
         <div class="modal-body" id="modal-content-area"></div>
     </div>
 
-    <!-- 5. VANZ CATATAN MODAL WINDOW / POP-UP (.vctt) -->
+    <!-- 5. VANZ CATATAN MODAL (.vctt) -->
     <div id="vctt-modal" class="modal-overlay vctt-overlay">
         <div class="vctt-modal-container">
             <div class="vctt-header">
                 <div class="vctt-header-title">
                     <span class="material-symbols-rounded" style="color: var(--accent-color);">description</span>
-                    Vanz Catatan (.vctt)
+                    Vanz Catatan Cloud (.vctt)
                 </div>
                 <button class="modal-close-btn" style="background: rgba(0,0,0,0.08); color: var(--text-primary);" onclick="closeVcttModal()">
                     <span class="material-symbols-rounded">close</span>
@@ -719,18 +717,14 @@
 
             <div class="vctt-body">
                 <input type="text" id="vctt-title" class="vctt-input-title" placeholder="Judul Catatan...">
-                <textarea id="vctt-content" class="vctt-input-content" placeholder="Tulis isi catatan Vanz Cloud di sini..."></textarea>
+                <textarea id="vctt-content" class="vctt-input-content" placeholder="Tulis isi catatan di sini... (Akan langsung tersimpan ke Cloud)"></textarea>
             </div>
 
             <div class="vctt-footer">
-                <input type="file" id="vctt-file-input" accept=".vctt" style="display: none;" onchange="readVcttFile(event)">
-                <button class="apple-btn btn-soft" onclick="document.getElementById('vctt-file-input').click()">
-                    <span class="material-symbols-rounded" style="font-size: 16px;">file_open</span>
-                    Buka .vctt
-                </button>
-                <button class="apple-btn btn-accent" onclick="saveVcttFile()">
-                    <span class="material-symbols-rounded" style="font-size: 16px;">save</span>
-                    Simpan File .vctt
+                <button class="apple-btn btn-soft" onclick="closeVcttModal()">Batal</button>
+                <button class="apple-btn btn-accent" id="vctt-save-btn" onclick="saveVcttFile()">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">cloud_upload</span>
+                    Simpan ke Cloud
                 </button>
             </div>
         </div>
@@ -747,8 +741,8 @@
         let accessToken = null;
         let cachedFiles = [];
         let currentFilter = 'all';
+        let currentVcttFileId = null; // Menyimpan ID jika sedang mengedit file .vctt dari Cloud
 
-        // SIGNATURE UNIK AGAR HANYA BISA DIBUAT/DIBACA VIA VANZ CLOUD
         const VANZ_HEADER_KEY = "VANZ_CLOUD_ENCRYPTED_NOTE_V1:";
 
         window.onload = function() {
@@ -761,6 +755,9 @@
                     onLoginSuccess();
                 },
             });
+
+            // PASANG EVENT LISTENER UPLOAD DI SINI
+            document.getElementById('upload-btn').addEventListener('click', uploadFileToDrive);
         };
 
         function triggerLogin() {
@@ -828,6 +825,63 @@
                     renderView();
                 }
             } catch (err) { loading.classList.add('hidden'); }
+        }
+
+        /* ---------------------------------- */
+        /* FUNGSI UPLOAD FILE KE DRIVE        */
+        /* ---------------------------------- */
+        async function uploadFileToDrive() {
+            const fileInput = document.getElementById('file-input');
+            const uploadStatus = document.getElementById('upload-status');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Pilih file yang ingin diunggah terlebih dahulu!");
+                return;
+            }
+
+            if (!accessToken) {
+                alert("Sesi login berakhir, silakan login ulang.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const uploadBtn = document.getElementById('upload-btn');
+            
+            uploadBtn.disabled = true;
+            uploadStatus.innerText = "Mengunggah...";
+
+            const metadata = {
+                name: file.name,
+                mimeType: file.type
+            };
+
+            const formData = new FormData();
+            formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${accessToken}` },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    uploadStatus.innerText = "Berhasil!";
+                    fileInput.value = "";
+                    fetchDriveFiles();
+                    fetchStorageQuota();
+                    setTimeout(() => { uploadStatus.innerText = ""; }, 3000);
+                } else {
+                    throw new Error("Upload gagal");
+                }
+            } catch (err) {
+                console.error(err);
+                uploadStatus.innerText = "Gagal!";
+                alert("Gagal mengunggah file ke Cloud.");
+            } finally {
+                uploadBtn.disabled = false;
+            }
         }
 
         function switchView(type) {
@@ -914,7 +968,6 @@
             });
         }
 
-        /* PUTAR / BUKA MEDIA LANGSUNG DI APLIKASI VIA DRIVE STREAM */
         async function openInAppPreview(file) {
             const modal = document.getElementById('media-modal');
             const contentArea = document.getElementById('modal-content-area');
@@ -961,9 +1014,14 @@
         }
 
         /* ---------------------------------- */
-        /* LOGIKA MODAL & FILE .VCTT          */
+        /* LOGIKA CATATAN CLOUD (.vctt)       */
         /* ---------------------------------- */
-        function openVcttModal() {
+        function openVcttModal(fileId = null) {
+            currentVcttFileId = fileId;
+            if (!fileId) {
+                document.getElementById('vctt-title').value = '';
+                document.getElementById('vctt-content').value = '';
+            }
             document.getElementById('vctt-modal').classList.add('active');
         }
 
@@ -971,8 +1029,7 @@
             document.getElementById('vctt-modal').classList.remove('active');
         }
 
-        // SIMPAN CATATAN KE FORMAT .VCTT EKSKLUSIF
-        function saveVcttFile() {
+        async function saveVcttFile() {
             const title = document.getElementById('vctt-title').value.trim();
             const content = document.getElementById('vctt-content').value;
 
@@ -981,6 +1038,16 @@
                 return;
             }
 
+            if (!accessToken) {
+                alert("Harap login terlebih dahulu.");
+                return;
+            }
+
+            const saveBtn = document.getElementById('vctt-save-btn');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<span class="material-symbols-rounded" style="font-size:16px;">sync</span> Menyimpan...';
+            saveBtn.disabled = true;
+
             const dataObject = {
                 app: "Vanz Cloud",
                 created_at: new Date().toISOString(),
@@ -988,38 +1055,72 @@
                 content: content
             };
 
-            // Enkripsi dengan format rahasia Vanz Cloud
             const encryptedPayload = VANZ_HEADER_KEY + btoa(unescape(encodeURIComponent(JSON.stringify(dataObject))));
+            const fileName = title.endsWith('.vctt') ? title : `${title}.vctt`;
 
-            const blob = new Blob([encryptedPayload], { type: "application/octet-stream" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.vctt`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
+            try {
+                let response;
 
-        // BUKA FILE .VCTT DARI LOKAL MEMORI
-        function readVcttFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+                if (currentVcttFileId) {
+                    // Update file yang sudah ada di Drive
+                    response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${currentVcttFileId}?uploadType=media`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'text/plain'
+                        },
+                        body: encryptedPayload
+                    });
+                } else {
+                    // Buat file .vctt baru di Drive
+                    const metadata = {
+                        name: fileName,
+                        mimeType: 'text/plain'
+                    };
 
-            if (!file.name.endsWith('.vctt')) {
-                alert("Akses ditolak! File ini bukan format .vctt milik Vanz Cloud.");
-                return;
+                    const form = new FormData();
+                    form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                    form.append('file', new Blob([encryptedPayload], { type: 'text/plain' }));
+
+                    response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${accessToken}` },
+                        body: form
+                    });
+                }
+
+                if (response.ok) {
+                    closeVcttModal();
+                    fetchDriveFiles();
+                    fetchStorageQuota();
+                } else {
+                    throw new Error("Gagal menyimpan ke Cloud");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Gagal menyimpan catatan ke Vanz Cloud.");
+            } finally {
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
             }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                parseAndDisplayVctt(e.target.result.trim());
-            };
-            reader.readAsText(file);
         }
 
-        // DEKRIPSI & DECODE DATA .VCTT
+        async function openVcttFromDrive(fileId) {
+            try {
+                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const fileText = await response.text();
+                parseAndDisplayVctt(fileText.trim());
+                currentVcttFileId = fileId; 
+            } catch (err) {
+                alert("Gagal membuka catatan dari Vanz Cloud.");
+            }
+        }
+
         function parseAndDisplayVctt(rawText) {
             if (!rawText.startsWith(VANZ_HEADER_KEY)) {
-                alert("File .vctt tidak valid atau dibuat di luar ekosistem Vanz Cloud!");
+                alert("Format file .vctt tidak terenkripsi atau rusak!");
                 return;
             }
 
@@ -1030,22 +1131,9 @@
 
                 document.getElementById('vctt-title').value = parsed.title || "";
                 document.getElementById('vctt-content').value = parsed.content || "";
-                openVcttModal();
+                document.getElementById('vctt-modal').classList.add('active');
             } catch (err) {
-                alert("Gagal membaca atau mendeskripsi catatan .vctt.");
-            }
-        }
-
-        // BUKA FILE .VCTT LANGSUNG DARI GOOGLE DRIVE DASHBOARD
-        async function openVcttFromDrive(fileId) {
-            try {
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                const fileText = await response.text();
-                parseAndDisplayVctt(fileText.trim());
-            } catch (err) {
-                alert("Gagal mengunduh file catatan dari Google Drive.");
+                alert("Gagal membaca enkripsi catatan .vctt");
             }
         }
 
