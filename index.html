@@ -96,7 +96,7 @@
             flex: 1;
         }
 
-        .nav-item button {
+        .nav-item a, .nav-item button {
             width: 100%;
             display: flex;
             align-items: center;
@@ -111,11 +111,12 @@
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: left;
+            text-decoration: none;
         }
 
-        .nav-item button:hover { background: rgba(0, 0, 0, 0.05); }
+        .nav-item a:hover, .nav-item button:hover { background: rgba(0, 0, 0, 0.05); }
 
-        .nav-item.active button {
+        .nav-item.active a, .nav-item.active button {
             background: var(--accent-color);
             color: white;
             font-weight: 600;
@@ -158,7 +159,7 @@
             cursor: pointer;
             padding: 6px 12px;
             border-radius: var(--radius-medium);
-            transition: color 0.2s ease;
+            text-decoration: none;
         }
 
         .bottom-nav-item.active { color: var(--accent-color); font-weight: 600; }
@@ -341,12 +342,13 @@
         .hidden { display: none !important; }
 
         /* ---------------------------------- */
-        /* VANZ CATATAN MODAL (.VCTT) - LIGHT */
+        /* VANZ CATATAN MODAL (.VCTT)         */
         /* ---------------------------------- */
         .vctt-overlay {
             background: rgba(0, 0, 0, 0.3) !important;
         }
 
+        /* CSS Tampilan Desktop */
         .vctt-modal-container {
             width: 100%;
             max-width: 580px;
@@ -367,7 +369,6 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* Header Khas iOS Notes (Light Theme) */
         .vctt-header {
             padding: 16px 20px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.06);
@@ -386,7 +387,7 @@
         .vctt-icon-btn {
             background: transparent;
             border: none;
-            color: #007aff; /* Apple Blue Accent */
+            color: #007aff;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -397,7 +398,6 @@
 
         .vctt-icon-btn:hover { opacity: 0.7; }
 
-        /* Area Isi Catatan */
         .vctt-body {
             padding: 24px 28px;
             display: flex;
@@ -444,7 +444,6 @@
 
         .vctt-input-content::placeholder { color: #c7c7cc; }
 
-        /* Footer Simpan Catatan */
         .vctt-footer {
             padding: 14px 28px;
             border-top: 1px solid rgba(0, 0, 0, 0.06);
@@ -454,6 +453,9 @@
             background: #fbfbfd;
         }
 
+        /* ---------------------------------- */
+        /* UPGRADE: MOBILE FULLSCREEN NOTES   */
+        /* ---------------------------------- */
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .bottom-nav { display: flex; }
@@ -461,12 +463,25 @@
             .dashboard-grid { grid-template-columns: 1fr; }
             .media-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 
-            .vctt-overlay { align-items: flex-end !important; padding: 0 !important; }
+            /* Fullscreen khusus modal catatan di HP */
+            .vctt-overlay { 
+                padding: 0 !important; 
+                align-items: flex-start !important;
+            }
             .vctt-modal-container {
-                border-radius: 20px 20px 0 0;
-                border-bottom: none;
-                height: 88vh;
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 100vh !important;
+                height: 100dvh !important; /* Adaptif dengan viewport HP */
+                border-radius: 0 !important; /* Menghilangkan siku melengkung */
+                border: none !important;
                 animation: slideUp 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+            }
+            .vctt-header {
+                padding-top: calc(env(safe-area-inset-top) + 12px); /* Penyesuaian poni HP/Notch */
+            }
+            .vctt-footer {
+                padding-bottom: calc(env(safe-area-inset-bottom) + 14px); /* Penyesuaian nav bar HP */
             }
             @keyframes slideUp {
                 from { transform: translateY(100%); }
@@ -487,6 +502,12 @@
         </div>
 
         <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="home.html">
+                    <span class="material-symbols-rounded">home</span>
+                    Beranda
+                </a>
+            </li>
             <li class="nav-item active" id="side-nav-all">
                 <button onclick="switchView('all')">
                     <span class="material-symbols-rounded">folder_open</span>
@@ -527,6 +548,10 @@
 
     <!-- 2. MOBILE BOTTOM NAVBAR -->
     <nav class="bottom-nav">
+        <a href="home.html" class="bottom-nav-item">
+            <span class="material-symbols-rounded">home</span>
+            Beranda
+        </a>
         <button class="bottom-nav-item active" id="mob-nav-all" onclick="switchView('all')">
             <span class="material-symbols-rounded">folder</span>
             Berkas
@@ -644,7 +669,7 @@
         <div class="modal-body" id="modal-content-area"></div>
     </div>
 
-    <!-- 5. VANZ CATATAN MODAL (.vctt) - iOS LIGHT THEME -->
+    <!-- 5. VANZ CATATAN MODAL (.vctt) - FULLSCREEN IN MOBILE -->
     <div id="vctt-modal" class="modal-overlay vctt-overlay">
         <div class="vctt-modal-container">
             <!-- Header Khas iOS Notes -->
@@ -700,9 +725,17 @@
                 callback: (response) => {
                     if (response.error !== undefined) return;
                     accessToken = response.access_token;
+                    sessionStorage.setItem('vanz_access_token', accessToken);
                     onLoginSuccess();
                 },
             });
+
+            // Cek token dari sessionStorage (dari home.html)
+            const savedToken = sessionStorage.getItem('vanz_access_token');
+            if (savedToken) {
+                accessToken = savedToken;
+                onLoginSuccess();
+            }
 
             document.getElementById('upload-btn').addEventListener('click', uploadFileToDrive);
         };
@@ -718,6 +751,7 @@
             if (accessToken) {
                 google.accounts.oauth2.revoke(accessToken, () => {
                     accessToken = null;
+                    sessionStorage.removeItem('vanz_access_token');
                     document.getElementById('login-placeholder').classList.remove('hidden');
                     document.getElementById('drive-dashboard').classList.add('hidden');
                     document.getElementById('login-btn-side').classList.remove('hidden');
@@ -959,7 +993,6 @@
         function openVcttModal(fileId = null) {
             currentVcttFileId = fileId;
             
-            // Format tanggal ala iOS (misal: 18 Mar 2026)
             const options = { day: 'numeric', month: 'short', year: 'numeric' };
             document.getElementById('vctt-date-display').innerText = new Date().toLocaleDateString('id-ID', options);
 
