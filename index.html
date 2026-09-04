@@ -45,7 +45,7 @@
         }
 
         /* ---------------------------------- */
-        /* DESKTOP SIDEBAR (Left Navigation)  */
+        /* DESKTOP SIDEBAR                    */
         /* ---------------------------------- */
         .sidebar {
             width: 250px;
@@ -57,9 +57,7 @@
             flex-direction: column;
             padding: 20px 16px;
             position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
+            top: 0; bottom: 0; left: 0;
             z-index: 100;
         }
 
@@ -115,9 +113,7 @@
             text-align: left;
         }
 
-        .nav-item button:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
+        .nav-item button:hover { background: rgba(0, 0, 0, 0.05); }
 
         .nav-item.active button {
             background: var(--accent-color);
@@ -137,9 +133,7 @@
         .bottom-nav {
             display: none;
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             height: 65px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: var(--glass-blur);
@@ -167,14 +161,8 @@
             transition: color 0.2s ease;
         }
 
-        .bottom-nav-item.active {
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-
-        .bottom-nav-item span {
-            font-size: 22px;
-        }
+        .bottom-nav-item.active { color: var(--accent-color); font-weight: 600; }
+        .bottom-nav-item span { font-size: 22px; }
 
         /* ---------------------------------- */
         /* MAIN CONTENT AREA                  */
@@ -194,19 +182,9 @@
             margin-bottom: 28px;
         }
 
-        .page-title h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
+        .page-title h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; }
+        .page-title p { color: var(--text-secondary); font-size: 14px; margin-top: 2px; }
 
-        .page-title p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-top: 2px;
-        }
-
-        /* Apple Buttons */
         .apple-btn {
             display: inline-flex;
             align-items: center;
@@ -226,7 +204,6 @@
         .btn-soft:hover { background-color: rgba(0, 0, 0, 0.09); }
         .btn-danger { background-color: rgba(255, 59, 48, 0.12); color: #ff3b30; }
 
-        /* Apple Cards */
         .apple-card {
             background: var(--card-bg);
             backdrop-filter: var(--glass-blur);
@@ -257,12 +234,7 @@
             gap: 6px;
         }
 
-        .storage-value {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 10px;
-        }
+        .storage-value { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
 
         .progress-bar-track {
             background: rgba(0, 0, 0, 0.08);
@@ -274,15 +246,11 @@
 
         .progress-bar-fill {
             background: linear-gradient(90deg, #34c759, #30b0c7, #007aff);
-            height: 100%;
-            width: 0%;
+            height: 100%; width: 0%;
             border-radius: 4px;
             transition: width 0.5s ease;
         }
 
-        /* ---------------------------------- */
-        /* MEDIA GRID & LIGHTBOX MODAL       */
-        /* ---------------------------------- */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -298,98 +266,59 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .media-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-        }
+        .media-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); }
 
         .media-thumb-box {
-            width: 100%;
-            height: 140px;
+            width: 100%; height: 140px;
             background: #e5e5ea;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
         }
 
-        .media-thumb-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .media-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .media-play-icon {
             position: absolute;
             background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border-radius: 50%;
-            padding: 8px;
-            display: flex;
-            backdrop-filter: blur(4px);
+            color: white; border-radius: 50%; padding: 8px;
+            display: flex; backdrop-filter: blur(4px);
         }
 
-        .media-info {
-            padding: 10px 12px;
-        }
-
-        .media-name {
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .media-info { padding: 10px 12px; }
+        .media-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* Lightbox Modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease;
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-header {
             position: absolute;
             top: 20px; left: 20px; right: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
+            display: flex; justify-content: space-between; align-items: center; color: white;
         }
 
         .modal-close-btn {
             background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            border: none; color: white;
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
 
         .modal-body img, .modal-body video {
-            max-width: 90vw;
-            max-height: 80vh;
+            max-width: 90vw; max-height: 80vh;
             border-radius: var(--radius-medium);
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
         }
@@ -401,112 +330,130 @@
             overflow: hidden;
         }
 
-        .finder-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
+        .finder-table { width: 100%; border-collapse: collapse; text-align: left; }
         .finder-table th {
-            background-color: #fafafa;
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            padding: 12px 20px;
+            background-color: #fafafa; color: var(--text-secondary);
+            font-size: 12px; font-weight: 600; padding: 12px 20px;
             border-bottom: 1px solid var(--border-color);
         }
-
-        .finder-table td {
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 13px;
-        }
+        .finder-table td { padding: 14px 20px; border-bottom: 1px solid var(--border-color); font-size: 13px; }
 
         .hidden { display: none !important; }
 
         /* ---------------------------------- */
-        /* VANZ CATATAN MODAL (.VCTT) UI      */
+        /* VANZ CATATAN MODAL (.VCTT) - LIGHT */
         /* ---------------------------------- */
+        .vctt-overlay {
+            background: rgba(0, 0, 0, 0.3) !important;
+        }
+
         .vctt-modal-container {
             width: 100%;
-            max-width: 620px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: var(--glass-blur);
-            border-radius: var(--radius-large);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            max-width: 580px;
+            height: 80vh;
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            animation: modalFadeIn 0.2s ease;
+            animation: modalFadeIn 0.25s ease;
+            color: #1c1c1e;
         }
 
         @keyframes modalFadeIn {
-            from { transform: scale(0.95); opacity: 0; }
+            from { transform: scale(0.96); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
+        /* Header Khas iOS Notes (Light Theme) */
         .vctt-header {
             padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(246, 246, 246, 0.6);
+            background: #ffffff;
         }
 
-        .vctt-header-title {
-            font-size: 15px;
-            font-weight: 600;
+        .vctt-header-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 16px;
         }
 
+        .vctt-icon-btn {
+            background: transparent;
+            border: none;
+            color: #007aff; /* Apple Blue Accent */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: opacity 0.2s;
+        }
+
+        .vctt-icon-btn:hover { opacity: 0.7; }
+
+        /* Area Isi Catatan */
         .vctt-body {
-            padding: 20px;
+            padding: 24px 28px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .vctt-date {
+            font-size: 13px;
+            color: #8e8e93;
+            font-weight: 500;
         }
 
         .vctt-input-title {
             width: 100%;
-            padding: 12px 14px;
-            font-size: 16px;
-            font-weight: 600;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-medium);
+            padding: 0;
+            font-size: 28px;
+            font-weight: 700;
+            border: none;
             outline: none;
-            background: #fff;
+            background: transparent;
+            color: #1c1c1e;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
+
+        .vctt-input-title::placeholder { color: #aeaeb2; }
 
         .vctt-input-content {
             width: 100%;
-            height: 240px;
-            padding: 14px;
-            font-size: 14px;
+            flex: 1;
+            padding: 0;
+            font-size: 16px;
             line-height: 1.6;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-medium);
+            border: none;
             outline: none;
-            resize: vertical;
-            background: #fff;
+            resize: none;
+            background: transparent;
+            color: #3a3a3c;
+            font-weight: 400;
         }
 
+        .vctt-input-content::placeholder { color: #c7c7cc; }
+
+        /* Footer Simpan Catatan */
         .vctt-footer {
-            padding: 14px 20px;
-            border-top: 1px solid var(--border-color);
+            padding: 14px 28px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
-            background: rgba(246, 246, 246, 0.6);
+            background: #fbfbfd;
         }
 
-        /* ---------------------------------- */
-        /* RESPONSIVE LAYOUT                 */
-        /* ---------------------------------- */
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .bottom-nav { display: flex; }
@@ -514,18 +461,13 @@
             .dashboard-grid { grid-template-columns: 1fr; }
             .media-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 
-            .vctt-overlay {
-                align-items: flex-end !important;
-                padding: 0 !important;
-            }
-
+            .vctt-overlay { align-items: flex-end !important; padding: 0 !important; }
             .vctt-modal-container {
                 border-radius: 20px 20px 0 0;
                 border-bottom: none;
-                max-height: 90vh;
+                height: 88vh;
                 animation: slideUp 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
             }
-
             @keyframes slideUp {
                 from { transform: translateY(100%); }
                 to { transform: translateY(0); }
@@ -702,26 +644,32 @@
         <div class="modal-body" id="modal-content-area"></div>
     </div>
 
-    <!-- 5. VANZ CATATAN MODAL (.vctt) -->
+    <!-- 5. VANZ CATATAN MODAL (.vctt) - iOS LIGHT THEME -->
     <div id="vctt-modal" class="modal-overlay vctt-overlay">
         <div class="vctt-modal-container">
+            <!-- Header Khas iOS Notes -->
             <div class="vctt-header">
-                <div class="vctt-header-title">
-                    <span class="material-symbols-rounded" style="color: var(--accent-color);">description</span>
-                    Vanz Catatan Cloud (.vctt)
-                </div>
-                <button class="modal-close-btn" style="background: rgba(0,0,0,0.08); color: var(--text-primary);" onclick="closeVcttModal()">
-                    <span class="material-symbols-rounded">close</span>
+                <button class="vctt-icon-btn" onclick="closeVcttModal()" title="Kembali">
+                    <span class="material-symbols-rounded">arrow_back</span>
                 </button>
+                <div class="vctt-header-actions">
+                    <button class="vctt-icon-btn" title="Kategori"><span class="material-symbols-rounded" style="color: #e5a93c;">category</span></button>
+                    <button class="vctt-icon-btn" title="Pin"><span class="material-symbols-rounded">push_pin</span></button>
+                    <button class="vctt-icon-btn" title="Kunci"><span class="material-symbols-rounded">lock</span></button>
+                    <button class="vctt-icon-btn" title="Selesai" onclick="closeVcttModal()"><span class="material-symbols-rounded">check_circle</span></button>
+                </div>
             </div>
 
+            <!-- Isi Catatan -->
             <div class="vctt-body">
-                <input type="text" id="vctt-title" class="vctt-input-title" placeholder="Judul Catatan...">
-                <textarea id="vctt-content" class="vctt-input-content" placeholder="Tulis isi catatan di sini... (Akan langsung tersimpan ke Cloud)"></textarea>
+                <div class="vctt-date" id="vctt-date-display">18 Mar 2026</div>
+                <input type="text" id="vctt-title" class="vctt-input-title" placeholder="Judul Catatan">
+                <textarea id="vctt-content" class="vctt-input-content" placeholder="Mulai menulis catatan..."></textarea>
             </div>
 
+            <!-- Footer Tombol Simpan -->
             <div class="vctt-footer">
-                <button class="apple-btn btn-soft" onclick="closeVcttModal()">Batal</button>
+                <span style="font-size: 12px; color: #8e8e93; font-weight: 500;">Format .vctt</span>
                 <button class="apple-btn btn-accent" id="vctt-save-btn" onclick="saveVcttFile()">
                     <span class="material-symbols-rounded" style="font-size: 16px;">cloud_upload</span>
                     Simpan ke Cloud
@@ -741,7 +689,7 @@
         let accessToken = null;
         let cachedFiles = [];
         let currentFilter = 'all';
-        let currentVcttFileId = null; // Menyimpan ID jika sedang mengedit file .vctt dari Cloud
+        let currentVcttFileId = null;
 
         const VANZ_HEADER_KEY = "VANZ_CLOUD_ENCRYPTED_NOTE_V1:";
 
@@ -756,7 +704,6 @@
                 },
             });
 
-            // PASANG EVENT LISTENER UPLOAD DI SINI
             document.getElementById('upload-btn').addEventListener('click', uploadFileToDrive);
         };
 
@@ -827,9 +774,6 @@
             } catch (err) { loading.classList.add('hidden'); }
         }
 
-        /* ---------------------------------- */
-        /* FUNGSI UPLOAD FILE KE DRIVE        */
-        /* ---------------------------------- */
         async function uploadFileToDrive() {
             const fileInput = document.getElementById('file-input');
             const uploadStatus = document.getElementById('upload-status');
@@ -850,11 +794,7 @@
             uploadBtn.disabled = true;
             uploadStatus.innerText = "Mengunggah...";
 
-            const metadata = {
-                name: file.name,
-                mimeType: file.type
-            };
-
+            const metadata = { name: file.name, mimeType: file.type };
             const formData = new FormData();
             formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
             formData.append('file', file);
@@ -1018,6 +958,11 @@
         /* ---------------------------------- */
         function openVcttModal(fileId = null) {
             currentVcttFileId = fileId;
+            
+            // Format tanggal ala iOS (misal: 18 Mar 2026)
+            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+            document.getElementById('vctt-date-display').innerText = new Date().toLocaleDateString('id-ID', options);
+
             if (!fileId) {
                 document.getElementById('vctt-title').value = '';
                 document.getElementById('vctt-content').value = '';
@@ -1062,7 +1007,6 @@
                 let response;
 
                 if (currentVcttFileId) {
-                    // Update file yang sudah ada di Drive
                     response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${currentVcttFileId}?uploadType=media`, {
                         method: 'PATCH',
                         headers: {
@@ -1072,12 +1016,7 @@
                         body: encryptedPayload
                     });
                 } else {
-                    // Buat file .vctt baru di Drive
-                    const metadata = {
-                        name: fileName,
-                        mimeType: 'text/plain'
-                    };
-
+                    const metadata = { name: fileName, mimeType: 'text/plain' };
                     const form = new FormData();
                     form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
                     form.append('file', new Blob([encryptedPayload], { type: 'text/plain' }));
@@ -1128,6 +1067,11 @@
                 const base64Data = rawText.replace(VANZ_HEADER_KEY, "");
                 const decodedJson = decodeURIComponent(escape(atob(base64Data)));
                 const parsed = JSON.parse(decodedJson);
+
+                if (parsed.created_at) {
+                    const dateObj = new Date(parsed.created_at);
+                    document.getElementById('vctt-date-display').innerText = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                }
 
                 document.getElementById('vctt-title').value = parsed.title || "";
                 document.getElementById('vctt-content').value = parsed.content || "";
